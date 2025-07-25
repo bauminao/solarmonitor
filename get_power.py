@@ -48,6 +48,7 @@ def get_sid():
     return False
 
 def write_sid():
+  return True
   
 
 print (get_sid())
