@@ -1,4 +1,6 @@
 .env
 *.pyc
 venv*
+cert.pem
+sid.json
 

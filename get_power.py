@@ -1,57 +1,18 @@
 #!/bin/env python3 
 
 import os
-import json
 
 from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".env"))
 
-from datetime import datetime
+from lib import SMA
 
-import requests
-requests.packages.urllib3.disable_warnings()
-
-def get_sid():
-  headers = {
-      'Accept': 'application/json, text/plain, */*',
-      'Accept-Language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
-      'Connection': 'keep-alive',
-      'Content-Type': 'application/json;charset=UTF-8',
-      'Origin': str(os.getenv("PV_IP")),
-      'Referer': str(os.getenv("PV_IP")),
-      'Sec-Fetch-Dest': 'empty',
-      'Sec-Fetch-Mode': 'cors',
-      'Sec-Fetch-Site': 'same-origin',
-      'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
-      'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138"',
-      'sec-ch-ua-mobile': '?0',
-      'sec-ch-ua-platform': '"Linux"',
-  }
-
-  json_data = {
-    'right': os.getenv("PV_USER"),
-    'pass': os.getenv("PV_PASS"),
-  }
-
-  raw = requests.post('https://' + str(os.getenv("PV_IP")) + '/dyn/login.json', headers=headers, json=json_data, verify=False)
-  _json = json.loads(str(raw.text))
-  #print (json.dumps(_json,indent=2))
-  sid = False
-  print (_json)
-  if "result" in _json.keys():
-    if "sid" in _json["result"].keys():
-      sid = _json["result"]["sid"]
-      return sid
-    else:
-      return False
-  else:
-    return False
-
-def write_sid():
-  return True
-  
-
-print (get_sid())
+if __name__ == "__main__":
+  Solar = SMA.SMA()
+  #Solar.get_new_sid()
+  Solar.load_sid()
+  #print ("SID: " + str(Solar.sid))
+  Solar.check_sid(Solar.sid)
 
 
 
